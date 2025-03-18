@@ -1,1 +1,2 @@
-yarn test
+#!/bin/sh
+yarn test --passWithNoTests
