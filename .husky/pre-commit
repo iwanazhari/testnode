@@ -36,15 +36,15 @@ fi
 
 # 🎨 Format Check
 echo -e "${MAGENTA}🎨 Checking code format...${NC}"
-(npm run check-format > /dev/null 2>&1) & spinner
+(yarn check-format > /dev/null 2>&1) & spinner
 if [ $? -ne 0 ]; then
-  echo -e "${RED}❌ Format check failed! Please run 'npm run format'.${NC} ✨"
+  echo -e "${RED}❌ Format check failed! Please run 'yarn format'.${NC} ✨"
   exit 1
 fi
 
 # 🚨 Lint Check
 echo -e "${YELLOW}🚨 Running lint check...${NC}"
-(npm run check-lint > /dev/null 2>&1) & spinner
+(yarn check-lint > /dev/null 2>&1) & spinner
 if [ $? -ne 0 ]; then
   echo -e "${RED}❌ Lint check failed! Please fix lint errors.${NC} 🚫"
   exit 1
@@ -52,7 +52,7 @@ fi
 
 # 🏗️ Type Checking
 echo -e "${CYAN}🧠 Running type check...${NC}"
-(npm run check-types > /dev/null 2>&1) & spinner
+(yarn check-types > /dev/null 2>&1) & spinner
 if [ $? -ne 0 ]; then
   echo -e "${RED}❌ Type check failed! Please fix TypeScript errors.${NC} 🔍"
   exit 1
