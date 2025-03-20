@@ -86,13 +86,20 @@ export const checkout = async (req, res) => {
 }
 
 // Controller untuk mendapatkan riwayat transaksi
-export const getTransactionHistory = async (req, res) => {
-  const { userId } = req.user // Mengambil userId dari token JWT
+// transaction.controller.js
 
+export const getTransactionHistory = async (req, res) => {
   try {
-    const transactionHistory = await cartService.getTransactionHistory(userId)
-    res.status(200).json({ status: 'success', transactionHistory })
+    // Asumsikan userId didapatkan dari hasil autentikasi middleware
+    const userId = req.user.id
+    // Ambil query parameter dari req.query, khususnya createdAt
+    const transactions = await cartService.getTransactionHistory(
+      userId,
+      req.query
+    )
+    return res.status(200).json({ status: 'success', data: transactions })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    console.error('Controller error:', error)
+    return res.status(500).json({ status: 'error', message: error.message })
   }
 }

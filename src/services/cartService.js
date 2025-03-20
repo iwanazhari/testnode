@@ -183,21 +183,35 @@ export const checkout = async (userId) => {
   }
 }
 
-// Mendapatkan riwayat transaksi
-export const getTransactionHistory = async (userId) => {
+// transaction.service.js
+export const getTransactionHistory = async (userId, query) => {
   try {
+    const filter = { userId }
+
+    if (query && query.createdAt) {
+      const dateInput = new Date(query.createdAt)
+      if (isNaN(dateInput.getTime())) {
+        throw new Error('Format createdAt tidak valid')
+      }
+
+      // Gunakan nilai createdAt apa adanya tanpa mengubahnya ke awal atau akhir hari
+      filter.createdAt = dateInput
+    }
+
+    console.log('Filter being used:', filter) // Debugging
+
     const transactions = await prisma.transaction.findMany({
-      where: { userId },
+      where: filter,
       orderBy: { createdAt: 'desc' }
     })
 
-    if (transactions.length === 0) {
-      throw new Error('No transactions found')
+    if (!transactions || transactions.length === 0) {
+      throw new Error('Transaksi tidak ditemukan')
     }
 
     return transactions
   } catch (error) {
     console.error('Error fetching transaction history:', error)
-    throw new Error('Failed to fetch transaction history')
+    throw new Error('Gagal mengambil riwayat transaksi')
   }
 }
